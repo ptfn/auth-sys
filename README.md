@@ -1,2 +1,2 @@
-# auth-sys
+# AuthSys
 auth-sys
