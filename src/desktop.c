@@ -1,4 +1,58 @@
 #include <gtk/gtk.h>
+#include "db.h"
+
+GListStore *
+create_client_list(void)
+{
+    GListStore *store = g_list_store_new(G_TYPE_POINTER);
+
+    client_t *client1 = g_new(client1, 1);
+    client1->name = "Bob";
+    client1->key = "Key1";
+    client1->login = "Bob12";
+    client1->password = "1234";
+    g_list_store_append(store, client1);
+
+    client_t *client2 = g_new(client2, 1);
+    client1->name = "Alice";
+    client1->key = "Key2";
+    client1->login = "Alice21";
+    client1->password = "4321";
+    g_list_store_append(store, client2);
+
+    client_t *client3 = g_new(client3, 1);
+    client1->name = "Charlie";
+    client1->key = "Key3";
+    client1->login = "Charlie31";
+    client1->password = "1111";
+    g_list_store_append(store, client3);
+
+    return store;
+}
+
+static char* 
+get_name_client(GObject *item) {
+    client_t *client = (client_t*) item;
+    return client->name;
+}
+
+static char* 
+get_key_client(GObject *item) {
+    client_t *client = (client_t*) item;
+    return client->key;
+}
+
+static char* 
+get_login_client(GObject *item) {
+    client_t *client = (client_t*) item;
+    return client->login;
+}
+
+static char* 
+get_pass_client(GObject *item) {
+    client_t *client = (client_t*) item;
+    return client->password;
+}
 
 static void
 quit_activated(GSimpleAction *action, GVariant *parameter, GApplication *application) {
@@ -105,6 +159,40 @@ app_startup (GApplication *application) {
     g_object_unref(menu_item_client);
     g_object_unref(menu_item_user);
     g_object_unref(menu_item_help);
+
+    GListStore *client_list = create_client_list();
+    GtkWidget *column_view = gtk_column_view_new(GTK_SELECTION_MODEL(g_list_store_get_model(client_list)));
+
+    GtkColumnViewColumn *name_column = gtk_column_view_column_new(
+        "Name",
+        gtk_label_new(NULL),
+        (GtkListItemFactoryFunc) get_name_client
+    );
+    gtk_column_view_append_column(GTK_COLUMN_VIEW(column_view), username_column);
+
+    GtkColumnViewColumn *key_column = gtk_column_view_column_new(
+        "Key",
+        gtk_label_new(NULL),
+        (GtkListItemFactoryFunc) get_key_client
+    );
+
+    GtkColumnViewColumn *login_column = gtk_column_view_column_new(
+        "Login",
+        gtk_label_new(NULL),
+        (GtkListItemFactoryFunc) get_login_client
+    );
+
+    GtkColumnViewColumn *password_column = gtk_column_view_column_new(
+        "Password",
+        gtk_label_new(NULL),
+        (GtkListItemFactoryFunc) get_pass_client
+    );
+
+    gtk_column_view_append_column(GTK_COLUMN_VIEW(column_view), email_column);
+
+    gtk_window_set_child(GTK_WINDOW(window), column_view);
+
+    gtk_widget_show(window);
  
     gtk_application_set_menubar (GTK_APPLICATION (app), G_MENU_MODEL (menubar));
 }

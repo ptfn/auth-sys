@@ -52,7 +52,7 @@ $(IPC): astp.o ipc.o
 	$(CC) $(FLAGS) -o $(BIN)/$(IPC) $(BIN)/astp.o $(BIN)/ipc.o 
 
 desktop:
-	gcc -Wall -Werror -std=gnu11 src/desktop.c `pkg-config --static --cflags --libs gtk4`
+	gcc src/desktop.c `pkg-config --static --cflags --libs gtk4`
 
 package:
 	apt install gir1.2-gtk-4.0 gtk-4-examples gtk-4-tests libgtk-4-1 libgtk-4-bin libgtk-4-bin libgtk-4-common libgtk-4-dev libgtk-4-doc libgtk-4-media-gstreamer

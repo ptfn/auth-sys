@@ -21,8 +21,28 @@ int server(uint16_t port, int limit)
     int client_sock;
     accept(server_sock, 0, 0);
 
+    /* server func
+     *
+     * while 
+     * {
+     * accept
+     * recv
+     * func -> create client -> send MS -> recv result
+     * send result
+     * close client
+     * } 
+     */
 
-
+    /* client func
+     *
+     * arg data -> format data
+     * connect
+     * send
+     * recv
+     * return result
+     * close
+     *
+     */
     return 0;
 }
 
